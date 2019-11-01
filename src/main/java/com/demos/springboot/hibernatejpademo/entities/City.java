@@ -15,7 +15,11 @@ public class City {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "CountryCode")
+	/*
+	 * if we write @Column(name = "CountryCode") hibernate jpa converts it to
+	 * Country_Code in sql command so we have to write CountryCode to CountryCode
+	 */
+	@Column(name = "Countrycode")
 	private String countryCode;
 
 	@Column(name = "Name")
@@ -34,6 +38,10 @@ public class City {
 		this.name = name;
 		this.district = district;
 		this.population = population;
+	}
+
+	public City() {
+
 	}
 
 	public int getId() {

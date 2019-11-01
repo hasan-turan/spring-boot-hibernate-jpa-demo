@@ -6,11 +6,13 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.demos.springboot.hibernatejpademo.dal.ICityDal;
 import com.demos.springboot.hibernatejpademo.entities.City;
 
+@Repository
 public class HibernateCityDal implements ICityDal {
 
 	private EntityManager entityManager;
@@ -25,25 +27,37 @@ public class HibernateCityDal implements ICityDal {
 	public List<City> getAll() {
 		Session session = entityManager.unwrap(Session.class);
 		List<City> cities = session.createQuery("from City", City.class).getResultList();
-		return cities;,
+		return cities;
 	}
 
 	@Override
+	@Transactional
 	public void add(City city) {
-		// TODO Auto-generated method stub
+		Session session = entityManager.unwrap(Session.class);
+		session.save(city);
 
 	}
 
 	@Override
+	@Transactional
 	public void update(City city) {
-		// TODO Auto-generated method stub
-
+		Session session = entityManager.unwrap(Session.class);
+		session.update(city);
 	}
 
 	@Override
+	@Transactional
 	public void delete(City city) {
-		// TODO Auto-generated method stub
+		Session session = entityManager.unwrap(Session.class);
+		City cityToBeDeleted = this.getById(city.getId());
+		session.delete(cityToBeDeleted);
+	}
 
+	@Override
+	@Transactional
+	public City getById(int id) {
+		Session session = entityManager.unwrap(Session.class);
+		return session.get(City.class, id);
 	}
 
 }
